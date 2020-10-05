@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.LoginScreenController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox layoutX="260.0" layoutY="221.0" prefHeight="120.0" prefWidth="305.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="usernameLabel" prefHeight="35.0" prefWidth="97.0" text="xUsernamex" />
+                        <Label fx:id="passwordLabel" prefHeight="35.0" prefWidth="95.0" text="xPasswordx" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="70.0" prefWidth="220.0">
+                     <children>
+                        <TextField fx:id="userID" prefHeight="35.0" prefWidth="166.0" />
+                        <PasswordField fx:id="password" prefHeight="35.0" prefWidth="168.0" />
+                        <HBox prefHeight="45.0" prefWidth="213.0">
+                           <children>
+                              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginHandler" prefHeight="25.0" prefWidth="115.0" text="xLoginx">
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="15.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitHandler" prefHeight="25.0" prefWidth="142.0" text="xExitx">
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="15.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label fx:id="titleLabel" layoutX="81.0" layoutY="80.0" prefHeight="34.0" prefWidth="357.0" text="xAppointment Managerx">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <VBox layoutX="25.0" layoutY="319.0" prefHeight="67.0" prefWidth="202.0">
+               <children>
+                  <Label fx:id="locationLabel" text="xLocation Labelx">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="localTimeLabel" text="xLocal Time Labelx">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

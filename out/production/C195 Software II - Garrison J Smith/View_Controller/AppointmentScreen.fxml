@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="569.0" prefWidth="1146.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
+   <children>
+      <TableView editable="true" layoutX="55.0" layoutY="48.0" prefHeight="244.0" prefWidth="1037.0">
+         <columns>
+            <TableColumn fx:id="appointmentIDCol" prefWidth="67.0" text="ID" />
+            <TableColumn fx:id="appointmentTitleCol" prefWidth="68.0" text="Title" />
+            <TableColumn fx:id="appointmentDescCol" prefWidth="126.0" text="Description" />
+            <TableColumn fx:id="appointmentLocationCol" prefWidth="134.0" text="Location" />
+            <TableColumn fx:id="contactCol" prefWidth="67.0" text="Contact" />
+            <TableColumn fx:id="typeCol" prefWidth="91.0" text="Type" />
+            <TableColumn fx:id="startDateCol" prefWidth="150.0" text="Start Date" />
+            <TableColumn fx:id="endDateCol" prefWidth="96.0" text="End Date" />
+            <TableColumn fx:id="customerCol" prefWidth="119.0" text="Customer" />
+            <TableColumn fx:id="userCol" prefWidth="118.0" text="User" />
+         </columns>
+      </TableView>
+      <GridPane layoutX="173.0" layoutY="356.0" prefHeight="137.0" prefWidth="800.0">
+         <children>
+            <Label text="Title" GridPane.rowIndex="1" />
+            <Label text="Description" GridPane.rowIndex="2" />
+            <Label text="Location" GridPane.rowIndex="3" />
+            <TextField fx:id="descriptionText" prefHeight="25.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="locationText" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="titleText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Type" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label text="Contact" GridPane.columnIndex="3" />
+            <ComboBox fx:id="typeCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <ComboBox fx:id="contactCombo" prefWidth="150.0" GridPane.columnIndex="4" />
+            <Label text="Appointment ID" />
+            <TextField fx:id="appointmentIDText" promptText="Auto-Generated" GridPane.columnIndex="1" />
+            <ComboBox fx:id="customerCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Label text="Customer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <ComboBox fx:id="userCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Label text="User" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Label text="Start Date" GridPane.columnIndex="6" />
+            <Label text="Time" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Label text="End Date" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Label text="Time" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+            <DatePicker fx:id="startDate" GridPane.columnIndex="7" />
+            <DatePicker fx:id="endDate" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <ComboBox fx:id="startTime" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <ComboBox fx:id="endTime" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="107.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="158.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="0.0" prefWidth="31.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.0" minWidth="10.0" prefWidth="111.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="144.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="40.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="84.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="155.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="31.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="31.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Button layoutX="900.0" layoutY="522.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+      <Button layoutX="436.0" layoutY="317.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
+      <Button layoutX="601.0" layoutY="317.0" mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment" />
+      <Button layoutX="792.0" layoutY="317.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment" />
+      <Button layoutX="143.0" layoutY="503.0" mnemonicParsing="false" onAction="#saveAppointment" text="Save" />
+   </children>
+</AnchorPane>
