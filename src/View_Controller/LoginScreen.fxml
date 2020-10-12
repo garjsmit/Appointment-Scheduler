@@ -22,8 +22,8 @@
                   </VBox>
                   <VBox prefHeight="70.0" prefWidth="220.0">
                      <children>
-                        <TextField fx:id="userID" prefHeight="35.0" prefWidth="166.0" />
-                        <PasswordField fx:id="password" prefHeight="35.0" prefWidth="168.0" />
+                        <TextField fx:id="userIDText" prefHeight="35.0" prefWidth="166.0" />
+                        <PasswordField fx:id="passwordText" prefHeight="35.0" prefWidth="168.0" />
                         <HBox prefHeight="45.0" prefWidth="213.0">
                            <children>
                               <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginHandler" prefHeight="25.0" prefWidth="115.0" text="xLoginx">
