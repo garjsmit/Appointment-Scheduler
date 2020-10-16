@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -77,13 +78,19 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    interface myLamda {
+        void foo();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        //TODO translate errors into French
 
         rb = ResourceBundle.getBundle("utils/Nat", Locale.getDefault());
         if(Locale.getDefault().getLanguage().equals("fr")){
             titleLabel.setText(rb.getString("Title"));
-            //localTimeLabel.setText(rb.getString("LocalTime"));
+            localTimeLabel.setText("");
             locationLabel.setText(rb.getString("Location"));
             usernameLabel.setText(rb.getString("Username"));
             passwordLabel.setText(rb.getString("Password"));
@@ -92,14 +99,13 @@ public class LoginScreenController implements Initializable {
         }
         else {
             titleLabel.setText(rb.getString("Title"));
-            //localTimeLabel.setText(rb.getString("LocalTime"));
+            localTimeLabel.setText(String.valueOf(ZoneId.systemDefault()));
             locationLabel.setText(rb.getString("Location"));
             usernameLabel.setText(rb.getString("Username"));
             passwordLabel.setText(rb.getString("Password"));
             exitButton.setText(rb.getString("Exit"));
             loginButton.setText(rb.getString("Login"));
         }
-
     }
 
 }

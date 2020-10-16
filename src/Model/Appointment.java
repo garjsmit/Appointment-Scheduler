@@ -1,12 +1,39 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Appointment {
 
     private int appointmentID, customerID, userID, contactID;
+    private String title;
+    private String description;
+    private String type;
+    private String location;
+    private String customerName;
+    private String username;
+    private String contactName;
+    private ZonedDateTime startDate;
+    private ZonedDateTime endDate;
 
-    public Appointment(int appointmentID, int customerID, int userID, int contactID, String title, String description, String type, String location, LocalDateTime startDate, LocalDateTime endDate) {
+
+    public ZonedDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(ZonedDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public ZonedDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(ZonedDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public Appointment(int appointmentID, String title, String description, String type, String location, ZonedDateTime startDate, ZonedDateTime endDate, int customerID, String customerName, int userID, String username, int contactID, String contactName) {
         this.appointmentID = appointmentID;
         this.customerID = customerID;
         this.userID = userID;
@@ -17,10 +44,12 @@ public class Appointment {
         this.location = location;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.customerName = customerName;
+        this.username = username;
+        this.contactName = contactName;
     }
 
-    private String title, description, type, location;
-    private LocalDateTime startDate, endDate;
+
 
     public int getAppointmentID() {
         return appointmentID;
@@ -42,12 +71,28 @@ public class Appointment {
         return location;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
     public int getCustomerID() {
@@ -82,14 +127,6 @@ public class Appointment {
         this.location = location;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
@@ -101,5 +138,7 @@ public class Appointment {
     public void setContactID(int contactID) {
         this.contactID = contactID;
     }
+
+
 
 }

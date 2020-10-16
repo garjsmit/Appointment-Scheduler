@@ -1,6 +1,8 @@
 package DAO;
 
 import Model.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +11,10 @@ import java.util.ArrayList;
 
 public class UserDAO {
 
-    private static ArrayList<User> userList;
+    private static ObservableList<User> userList = FXCollections.observableArrayList();
     private static User foundUser;
 
-    private static ArrayList<User> getAllUsers() {
+    public static ObservableList<User> getAllUsers() {
 
         userList.clear();
 

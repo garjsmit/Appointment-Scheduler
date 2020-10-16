@@ -23,4 +23,8 @@ public class Contact {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return (contactID + " | " + contactName);
+    }
 }

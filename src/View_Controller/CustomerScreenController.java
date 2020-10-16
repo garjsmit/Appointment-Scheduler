@@ -58,7 +58,6 @@ public class CustomerScreenController implements Initializable {
     }
 
     public void addCustomer(ActionEvent event) {
-
         formGrid.setDisable(false);
         customerIDText.setText("");
         nameText.setText("");
@@ -82,9 +81,7 @@ public class CustomerScreenController implements Initializable {
 
 
             if (customerIDText.getText().isEmpty()) {
-
                 CustomerDAO.addCustomer(name, address, postalCode, phone, divisionID);
-
             } else {
                 int customerID = Integer.parseInt(customerIDText.getText());
                 CustomerDAO.updateCustomer(customerID, name, address, postalCode, phone, divisionID);
