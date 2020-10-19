@@ -45,15 +45,39 @@
             <Label text="Date" GridPane.columnIndex="6" />
             <Label text="Start Time" GridPane.columnIndex="6" GridPane.rowIndex="1" />
             <Label text="End Time" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-            <DatePicker fx:id="selectedDate" editable="false" GridPane.columnIndex="7" />
-            <ComboBox fx:id="startTime" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-            <ComboBox fx:id="endTime" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <DatePicker fx:id="selectedDate" editable="false" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="7" />
             <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#saveAppointment" text="Save" GridPane.columnIndex="7" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="80.0" />
                </GridPane.margin>
             </Button>
             <TextField fx:id="typeText" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1">
+               <children>
+                  <ComboBox fx:id="startHourCombo" prefHeight="25.0" prefWidth="80.0" />
+                  <Label contentDisplay="CENTER" text=":">
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </Label>
+                  <ComboBox fx:id="startMinuteCombo" prefHeight="25.0" prefWidth="75.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="2">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="endHourCombo" prefHeight="25.0" prefWidth="80.0" />
+                        <Label text=":">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox fx:id="endMinuteCombo" prefHeight="25.0" prefWidth="75.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="107.0" />
@@ -63,7 +87,7 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="144.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="40.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="84.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="155.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="200.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -73,13 +97,36 @@
          </rowConstraints>
       </GridPane>
       <Button layoutX="999.0" layoutY="496.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
-      <Button layoutX="612.0" layoutY="305.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
-      <Button layoutX="765.0" layoutY="305.0" mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment" />
-      <Button layoutX="943.0" layoutY="305.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment" />
-      <Label fx:id="selectAppointmentLabel" layoutX="55.0" layoutY="310.0">
+      <Button layoutX="785.0" layoutY="302.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
+      <Button layoutX="934.0" layoutY="303.0" mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment" />
+      <Button layoutX="1106.0" layoutY="303.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment" />
+      <Label fx:id="selectAppointmentLabel" layoutX="888.0" layoutY="335.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <Label layoutX="328.0" layoutY="304.0" prefHeight="21.0" prefWidth="103.0" text="Show only:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="currentMonthRadio" layoutX="431.0" layoutY="307.0" mnemonicParsing="false" onAction="#filterByMonth" text="Current Month">
+         <toggleGroup>
+            <ToggleGroup fx:id="filterTG" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="currentWeekRadio" layoutX="557.0" layoutY="307.0" mnemonicParsing="false" onAction="#filterByWeek" text="Current Week" toggleGroup="$filterTG" />
+      <RadioButton fx:id="showAllRadio" layoutX="680.0" layoutY="307.0" mnemonicParsing="false" onAction="#showAll" text="Show All" toggleGroup="$filterTG" />
+      <RadioButton fx:id="startAmRad" layoutX="1064.0" layoutY="400.0" mnemonicParsing="false" text="AM">
+         <toggleGroup>
+            <ToggleGroup fx:id="startTimeTG" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="startPmRad" layoutX="1115.0" layoutY="400.0" mnemonicParsing="false" text="PM" toggleGroup="$startTimeTG" />
+      <RadioButton fx:id="endAmRad" layoutX="1064.0" layoutY="431.0" mnemonicParsing="false" text="AM" />
+      <RadioButton fx:id="endPmRad" layoutX="1115.0" layoutY="431.0" mnemonicParsing="false" text="PM">
+         <toggleGroup>
+            <ToggleGroup fx:id="endTimeTG" />
+         </toggleGroup>
+      </RadioButton>
    </children>
 </AnchorPane>

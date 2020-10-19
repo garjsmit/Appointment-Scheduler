@@ -90,7 +90,7 @@ public class LoginScreenController implements Initializable {
         rb = ResourceBundle.getBundle("utils/Nat", Locale.getDefault());
         if(Locale.getDefault().getLanguage().equals("fr")){
             titleLabel.setText(rb.getString("Title"));
-            localTimeLabel.setText("");
+            localTimeLabel.setText(String.valueOf(ZoneId.systemDefault()));
             locationLabel.setText(rb.getString("Location"));
             usernameLabel.setText(rb.getString("Username"));
             passwordLabel.setText(rb.getString("Password"));

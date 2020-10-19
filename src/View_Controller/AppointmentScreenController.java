@@ -5,6 +5,7 @@ import DAO.ContactDAO;
 import DAO.CustomerDAO;
 import DAO.UserDAO;
 import Model.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,9 @@ import javafx.scene.layout.GridPane;
 import utils.TimeUtils;
 
 import java.net.URL;
+import java.sql.Time;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -27,6 +30,8 @@ public class AppointmentScreenController implements Initializable {
     public static ObservableList<Contact> contacts = ContactDAO.getAllContacts();
     public static ObservableList<Customer> customers = CustomerDAO.getAllCustomers();
     public static ObservableList<User> users = UserDAO.getAllUsers();
+
+
 
     @FXML
     private TableView<Appointment> appointmentTableview;
@@ -50,6 +55,9 @@ public class AppointmentScreenController implements Initializable {
     private ComboBox<LocalTime> startTime, endTime;
 
     @FXML
+    private ComboBox<Integer> startHourCombo, startMinuteCombo, endHourCombo, endMinuteCombo;
+
+    @FXML
     private ComboBox<User> userCombo;
 
     @FXML
@@ -62,8 +70,12 @@ public class AppointmentScreenController implements Initializable {
     private DatePicker selectedDate;
 
     @FXML
+    private RadioButton showAllRadio, currentWeekRadio, currentMonthRadio, startAmRad, startPmRad, endAmRad, endPmRad;
+
+    @FXML
     private Label selectAppointmentLabel;
 
+    @FXML
     public void addAppointment(ActionEvent event) {
         formGrid.setDisable(false);
         appointmentIDText.setText("");
@@ -75,10 +87,9 @@ public class AppointmentScreenController implements Initializable {
         customerCombo.setValue(null);
         userCombo.setValue(null);
         selectedDate.setValue(null);
-        startTime.setValue(null);
-        endTime.setValue(null);
     }
 
+    @FXML
     public void updateAppointment(ActionEvent event) {
 
         formGrid.setDisable(false);
@@ -123,6 +134,7 @@ public class AppointmentScreenController implements Initializable {
         }
     }
 
+    @FXML
     public void deleteAppointment(ActionEvent event) {
 
 
@@ -130,21 +142,31 @@ public class AppointmentScreenController implements Initializable {
             selectAppointmentLabel.setText("Please select an appointment to delete.");
         }
         else{
-            AppointmentDAO.deleteAppointment(appointmentTableview.getSelectionModel().getSelectedItem().getAppointmentID());
+            AppointmentDAO.deleteAppointment(appointmentTableview.getSelectionModel().getSelectedItem().getAppointmentID()); //delete this and comment below for full functionality
+
 /*
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel this appointment?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
-            AppointmentDAO.deleteAppointment(appointmentTableview.getSelectionModel().getSelectedItem().getAppointmentID());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel this appointment?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+
+                int appointmentID = appointmentTableview.getSelectionModel().getSelectedItem().getAppointmentID();
+                String type = appointmentTableview.getSelectionModel().getSelectedItem().getType();
+                AppointmentDAO.deleteAppointment(appointmentID);
+
+                Alert deleteConfimred = new Alert(Alert.AlertType.INFORMATION, "Meeting: " + type + " with Appointment ID: " + appointmentID + " has been cancelled.");
+                Optional<ButtonType> answer = deleteConfimred.showAndWait();
         }
 
  */
+
+            appointmentTableview.getItems().clear();
             AppointmentDAO.getAllAppointments();
             appointmentTableview.refresh();
         }
 
     }
 
+    @FXML
     public void saveAppointment(ActionEvent event) {
 
         String title = titleText.getText();
@@ -154,25 +176,34 @@ public class AppointmentScreenController implements Initializable {
         int customerID = customerCombo.getSelectionModel().getSelectedItem().getCustomerID();
         int userID = userCombo.getSelectionModel().getSelectedItem().getUserID();
         int contactID = contactCombo.getSelectionModel().getSelectedItem().getContactID();
-        LocalDate date = selectedDate.getValue();
-        LocalTime selectedStart = startTime.getValue();
-        LocalTime selectedEnd = endTime.getValue();
-        LocalDateTime start = LocalDateTime.of(date, selectedStart);
-        LocalDateTime end = LocalDateTime.of(date, selectedEnd);
 
-        if(appointmentIDText.getText().isEmpty()){
-            AppointmentDAO.addAppointment(title, description, location, type, start, end, customerID, userID, contactID);
-        }
-        else{
-            int appointmentID = Integer.parseInt(appointmentIDText.getText());
-            AppointmentDAO.updateAppointment(appointmentID, title, description, location, type, start, end, customerID, userID, contactID);
-        }
+        ZonedDateTime startTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), startHourCombo.getValue(), startMinuteCombo.getValue(), startPmRad.isSelected());
+        ZonedDateTime endTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), endHourCombo.getValue(), endMinuteCombo.getValue(), endPmRad.isSelected());
 
-        AppointmentDAO.getAllAppointments();
-        appointmentTableview.refresh();
-        addAppointment(event);
+        if((startTime.isBefore(TimeUtils.getZonedStartOfBusiness(selectedDate.getValue())) || startTime.isAfter(TimeUtils.getZonedEndOfBusiness(selectedDate.getValue())))){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Your appointment must start within business hours, which are daily from 8 am to 10pm, EST");
+            Optional<ButtonType> result = alert.showAndWait();
+
+        }else if((endTime.isBefore(TimeUtils.getZonedStartOfBusiness(selectedDate.getValue())) || endTime.isAfter(TimeUtils.getZonedEndOfBusiness(selectedDate.getValue())))){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Your appointment must end within business hours, which are daily from 8 am to 10pm, EST");
+            Optional<ButtonType> result = alert.showAndWait();
+
+        }else{
+            if(appointmentIDText.getText().isEmpty()){
+                AppointmentDAO.addAppointment(title, description, location, type, startTime, endTime, customerID, userID, contactID);
+            }
+            else{
+                int appointmentID = Integer.parseInt(appointmentIDText.getText());
+                AppointmentDAO.updateAppointment(appointmentID, title, description, location, type, startTime, endTime, customerID, userID, contactID);
+            }
+            appointmentTableview.getItems().clear();
+            AppointmentDAO.getAllAppointments();
+            appointmentTableview.refresh();
+            addAppointment(event);
+        }
     }
 
+    @FXML
     public void exit(ActionEvent event) {
         System.exit(0);
 /*
@@ -184,6 +215,30 @@ public class AppointmentScreenController implements Initializable {
             System.exit(0);
         }
  */
+    }
+
+    @FXML
+    void filterByMonth(ActionEvent event) {
+        appointmentTableview.getItems().clear();
+        ObservableList<Appointment> currentMonthAppointmentList = AppointmentDAO.getCurrentMonthAppointments();
+        appointmentTableview.setItems(currentMonthAppointmentList);
+    }
+
+    @FXML
+    void filterByWeek(ActionEvent event) {
+        appointmentTableview.getItems().clear();
+        ObservableList<Appointment> currentWeekAppointmentList = AppointmentDAO.getCurrentWeekAppointments();
+        appointmentTableview.setItems(currentWeekAppointmentList);
+
+    }
+
+    @FXML
+    void showAll(ActionEvent event) {
+
+        appointmentTableview.getItems().clear();
+        appointmentTableview.setItems(AppointmentDAO.getAllAppointments());
+        appointmentTableview.refresh();
+
     }
 
     @Override
@@ -256,11 +311,12 @@ public class AppointmentScreenController implements Initializable {
         contactCombo.setItems(contacts);
         customerCombo.setItems(customers);
         userCombo.setItems(users);
-        TimeUtils.populateComboBox(startTime);
-        TimeUtils.businessHoursStart = LocalTime.of(8,0);
-        TimeUtils.populateComboBox(endTime);
+        startHourCombo.setItems(TimeUtils.getHours());
+        startMinuteCombo.setItems(TimeUtils.getMinutes());
+        endHourCombo.setItems(TimeUtils.getHours());
+        endMinuteCombo.setItems(TimeUtils.getMinutes());
+
 
     }
-
 
 }

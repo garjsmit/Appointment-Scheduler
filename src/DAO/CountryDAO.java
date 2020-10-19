@@ -1,7 +1,6 @@
 package DAO;
 
 import Model.Country;
-import Main.Main;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +17,7 @@ public class CountryDAO {
 
         countryList.clear();
         try {
-            PreparedStatement ps = Main.conn.prepareStatement("SELECT * FROM countries");
+            PreparedStatement ps = Main.Main.conn.prepareStatement("SELECT * FROM countries");
 
             ps.execute();
 
