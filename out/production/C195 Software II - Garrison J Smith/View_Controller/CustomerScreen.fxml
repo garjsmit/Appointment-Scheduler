@@ -82,11 +82,13 @@
             </VBox>
          </children>
       </HBox>
-      <Button layoutX="999.0" layoutY="576.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+      <Button layoutX="387.0" layoutY="675.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
       <Label fx:id="pleaseSelectCustomerLabel" layoutX="128.0" layoutY="332.0" prefHeight="21.0" prefWidth="626.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <Button fx:id="appointmentScreen" layoutX="120.0" layoutY="675.0" mnemonicParsing="false" onAction="#appointmentScreen" text="Appointments" />
+      <Button layoutX="261.0" layoutY="675.0" mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
    </children>
 </AnchorPane>

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="569.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
+<AnchorPane prefHeight="688.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
    <children>
       <TableView fx:id="appointmentTableview" editable="true" layoutX="55.0" layoutY="48.0" prefHeight="244.0" prefWidth="1202.0">
          <columns>
@@ -96,7 +96,7 @@
             <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button layoutX="999.0" layoutY="496.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+      <Button layoutX="297.0" layoutY="604.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
       <Button layoutX="785.0" layoutY="302.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
       <Button layoutX="934.0" layoutY="303.0" mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment" />
       <Button layoutX="1106.0" layoutY="303.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment" />
@@ -122,11 +122,12 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton fx:id="startPmRad" layoutX="1115.0" layoutY="400.0" mnemonicParsing="false" text="PM" toggleGroup="$startTimeTG" />
-      <RadioButton fx:id="endAmRad" layoutX="1064.0" layoutY="431.0" mnemonicParsing="false" text="AM" />
-      <RadioButton fx:id="endPmRad" layoutX="1115.0" layoutY="431.0" mnemonicParsing="false" text="PM">
+      <RadioButton fx:id="endAmRad" layoutX="1064.0" layoutY="431.0" mnemonicParsing="false" text="AM">
          <toggleGroup>
             <ToggleGroup fx:id="endTimeTG" />
-         </toggleGroup>
-      </RadioButton>
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="endPmRad" layoutX="1115.0" layoutY="431.0" mnemonicParsing="false" text="PM" toggleGroup="$endTimeTG" />
+      <Button fx:id="customerScreen" layoutX="70.0" layoutY="604.0" mnemonicParsing="false" onAction="#customerScreen" text="Customers" />
+      <Button fx:id="reportScreen" layoutX="195.0" layoutY="604.0" mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
    </children>
 </AnchorPane>

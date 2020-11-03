@@ -1,12 +1,14 @@
 package Model;
 
+import java.time.LocalDateTime;
+
 public class Customer {
 
     private int customerID, divisionID, countryID;
     private String customerName, address, phone, postalCode, division, country;
+    private LocalDateTime createDate;
 
-
-    public Customer(String customerName, String address, String postalCode, String phone, int divisionID, String division, int countryID, String country) {
+    public Customer(String customerName, String address, String postalCode, String phone, int divisionID, String division, int countryID, String country, LocalDateTime createDate) {
         this.postalCode = postalCode;
         this.divisionID = divisionID;
         this.customerName = customerName;
@@ -15,9 +17,10 @@ public class Customer {
         this.division = division;
         this.countryID = countryID;
         this.country = country;
+        this.createDate = createDate;
     }
 
-    public Customer(int customerID, String customerName, String address, String postalCode, String phone, int divisionID, String division, int countryID, String country) {
+    public Customer(int customerID, String customerName, String address, String postalCode, String phone, int divisionID, String division, int countryID, String country, LocalDateTime createDate) {
         this.customerID = customerID;
         this.postalCode = postalCode;
         this.divisionID = divisionID;
@@ -27,6 +30,7 @@ public class Customer {
         this.division = division;
         this.countryID = countryID;
         this.country = country;
+        this.createDate = createDate;
     }
 
     public int getCustomerID() {
@@ -49,7 +53,6 @@ public class Customer {
         return postalCode;
     }
 
-
     public int getDivisionID() {
         return divisionID;
     }
@@ -65,6 +68,8 @@ public class Customer {
     public String getCountry() {
         return country;
     }
+
+    public LocalDateTime getCreateDate() { return createDate;  }
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
@@ -103,6 +108,8 @@ public class Customer {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public void setCreateDate(LocalDateTime createDate) {  this.createDate = createDate;  }
 
     @Override
     public String toString(){

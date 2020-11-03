@@ -1,8 +1,10 @@
 package View_Controller;
 
+import DAO.AppointmentDAO;
 import DAO.CountryDAO;
 import DAO.CustomerDAO;
 import DAO.FirstLevelDivisionDAO;
+import Model.Appointment;
 import Model.Country;
 import Model.Customer;
 import Model.FirstLevelDivision;
@@ -12,23 +14,32 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 
 public class CustomerScreenController implements Initializable {
 
+    Stage stage;
+    Parent scene;
     Customer customer;
+    ArrayList<Appointment> customerAppointments;
     ObservableList<Customer> customerList;
     ObservableList<Country> countries = CountryDAO.getAllCountries();
     ObservableList<FirstLevelDivision> allFirstLevelDivisions = FirstLevelDivisionDAO.getAllFirstLevelDivisions();
-
 
     @FXML
     private TableView<Customer> customerTable;
@@ -57,6 +68,24 @@ public class CustomerScreenController implements Initializable {
     public CustomerScreenController() throws SQLException {
     }
 
+    @FXML
+    public void appointmentScreen(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/View_Controller/AppointmentScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
+    public void reportScreen(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/View_Controller/ReportScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+
+    @FXML
     public void addCustomer(ActionEvent event) {
         formGrid.setDisable(false);
         customerIDText.setText("");
@@ -68,6 +97,7 @@ public class CustomerScreenController implements Initializable {
         divisionCombo.setValue(null);
     }
 
+    @FXML
     public void saveCustomer(ActionEvent event) throws SQLException {
 
             String name = nameText.getText();
@@ -93,6 +123,7 @@ public class CustomerScreenController implements Initializable {
             addCustomer(event);
     }
 
+    @FXML
     public void updateCustomer(ActionEvent event) throws SQLException {
 
         formGrid.setDisable(false);
@@ -138,7 +169,7 @@ public class CustomerScreenController implements Initializable {
         }
     }
 
-
+    @FXML
     public void deleteCustomer(ActionEvent event) throws SQLException {
 
         customerIDText.setText("");
@@ -150,24 +181,32 @@ public class CustomerScreenController implements Initializable {
         if (customerTable.getSelectionModel().getSelectedItem() == null) {
             pleaseSelectCustomerLabel.setText("Please select a customer to delete.");
         }
-/*
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer?");
+
+        int custID = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
+        customerAppointments = AppointmentDAO.getCustomerAppointments(custID);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this customer? " + customerAppointments.size() + " appointments will be deleted.");
+        alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
         Optional<ButtonType> result = alert.showAndWait();
 
-        if(result.isPresent() && result.get() == ButtonType.OK){
-            CustomerDAO.deleteCustomer(customerTable.getSelectionModel().getSelectedItem());
-        }
-*/
-        //TODO move this line of code to the if statement. this is for streamlining testing
-        CustomerDAO.deleteCustomer(customerTable.getSelectionModel().getSelectedItem().getCustomerID());
+        if(result.isPresent() && result.get() == ButtonType.OK) {
 
+            for (Appointment appointment : customerAppointments) {
+                AppointmentDAO.deleteAppointment(appointment.getAppointmentID());
+            }
+            CustomerDAO.deleteCustomer(custID);
+        }
+
+        //TODO - refresh the appointment tableview
+        //appointmentTableview.refresh();
         customerList = CustomerDAO.getAllCustomers();
         customerTable.refresh();
     }
 
+    @FXML
     public void exit(ActionEvent event) {
         System.exit(0);
-/*
+
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?");
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -175,7 +214,6 @@ public class CustomerScreenController implements Initializable {
         if(result.isPresent() && result.get() == ButtonType.OK)  {
             System.exit(0);
         }
- */
     }
 
     @Override

@@ -47,14 +47,14 @@
                   <Font size="28.0" />
                </font>
             </Label>
-            <VBox layoutX="25.0" layoutY="319.0" prefHeight="67.0" prefWidth="202.0">
+            <VBox layoutX="25.0" layoutY="319.0" prefHeight="67.0" prefWidth="544.0">
                <children>
                   <Label fx:id="locationLabel" text="xLocation Labelx">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="localTimeLabel" text="xLocal Time Labelx">
+                  <Label fx:id="localTimeLabel" prefHeight="31.0" prefWidth="441.0" text="xLocal Time Labelx">
                      <font>
                         <Font size="18.0" />
                      </font>

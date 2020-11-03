@@ -5,33 +5,34 @@ import DAO.ContactDAO;
 import DAO.CustomerDAO;
 import DAO.UserDAO;
 import Model.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import utils.TimeUtils;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.time.*;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static java.time.ZoneOffset.UTC;
 
 public class AppointmentScreenController implements Initializable {
 
-    public static ObservableList<Appointment> appointmentList = AppointmentDAO.getAllAppointments();
+    Stage stage;
+    Parent scene;
     public static ObservableList<Contact> contacts = ContactDAO.getAllContacts();
     public static ObservableList<Customer> customers = CustomerDAO.getAllCustomers();
     public static ObservableList<User> users = UserDAO.getAllUsers();
-
-
 
     @FXML
     private TableView<Appointment> appointmentTableview;
@@ -45,14 +46,12 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     private TableColumn<Appointment, ZonedDateTime> dateCol, startTimeCol, endTimeCol;
 
+
     @FXML
     private GridPane formGrid;
 
     @FXML
     private TextField appointmentIDText, titleText, descriptionText, locationText, typeText;
-
-    @FXML
-    private ComboBox<LocalTime> startTime, endTime;
 
     @FXML
     private ComboBox<Integer> startHourCombo, startMinuteCombo, endHourCombo, endMinuteCombo;
@@ -70,13 +69,30 @@ public class AppointmentScreenController implements Initializable {
     private DatePicker selectedDate;
 
     @FXML
-    private RadioButton showAllRadio, currentWeekRadio, currentMonthRadio, startAmRad, startPmRad, endAmRad, endPmRad;
+    private RadioButton startAmRad, startPmRad, endAmRad, endPmRad;
 
     @FXML
     private Label selectAppointmentLabel;
 
     @FXML
+    public void customerScreen(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/View_Controller/CustomerScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
+    public void reportScreen(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/View_Controller/ReportScreen.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
     public void addAppointment(ActionEvent event) {
+
         formGrid.setDisable(false);
         appointmentIDText.setText("");
         titleText.setText("");
@@ -87,6 +103,11 @@ public class AppointmentScreenController implements Initializable {
         customerCombo.setValue(null);
         userCombo.setValue(null);
         selectedDate.setValue(null);
+        startHourCombo.setValue(null);
+        startMinuteCombo.setValue(null);
+        endHourCombo.setValue(null);
+        endMinuteCombo.setValue(null);
+
     }
 
     @FXML
@@ -129,8 +150,34 @@ public class AppointmentScreenController implements Initializable {
             }
 
             selectedDate.setValue(selectedAppointment.getStartDate().toLocalDate());
-            startTime.setValue(selectedAppointment.getStartDate().toLocalTime());
-            endTime.setValue(selectedAppointment.getEndDate().toLocalTime());
+
+            if(selectedAppointment.getStartDate().toLocalTime().getHour() < 12){
+                startHourCombo.setValue(selectedAppointment.getStartDate().toLocalTime().getHour());
+                startAmRad.setSelected(true);
+            }
+            else if(selectedAppointment.getStartDate().toLocalTime().getHour() == 12){
+                startHourCombo.setValue(12);
+                startPmRad.setSelected(true);
+            }
+            else{
+                startHourCombo.setValue(selectedAppointment.getStartDate().toLocalTime().getHour() - 12);
+                startPmRad.setSelected(true);
+            }
+            startMinuteCombo.setValue(selectedAppointment.getStartDate().toLocalTime().getMinute());
+
+            if(selectedAppointment.getEndDate().toLocalTime().getHour() < 12){
+                endHourCombo.setValue(selectedAppointment.getEndDate().toLocalTime().getHour());
+                endAmRad.setSelected(true);
+            }
+            else if(selectedAppointment.getEndDate().toLocalTime().getHour() == 12){
+                endHourCombo.setValue(12);
+                endPmRad.setSelected(true);
+            }
+            else{
+                endHourCombo.setValue(selectedAppointment.getEndDate().toLocalTime().getHour() - 12);
+                endPmRad.setSelected(true);
+            }
+            endMinuteCombo.setValue(selectedAppointment.getEndDate().toLocalTime().getMinute());
         }
     }
 
@@ -142,10 +189,9 @@ public class AppointmentScreenController implements Initializable {
             selectAppointmentLabel.setText("Please select an appointment to delete.");
         }
         else{
-            AppointmentDAO.deleteAppointment(appointmentTableview.getSelectionModel().getSelectedItem().getAppointmentID()); //delete this and comment below for full functionality
 
-/*
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel this appointment?");
+            alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
             Optional<ButtonType> result = alert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK) {
 
@@ -154,11 +200,9 @@ public class AppointmentScreenController implements Initializable {
                 AppointmentDAO.deleteAppointment(appointmentID);
 
                 Alert deleteConfimred = new Alert(Alert.AlertType.INFORMATION, "Meeting: " + type + " with Appointment ID: " + appointmentID + " has been cancelled.");
+                alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
                 Optional<ButtonType> answer = deleteConfimred.showAndWait();
         }
-
- */
-
             appointmentTableview.getItems().clear();
             AppointmentDAO.getAllAppointments();
             appointmentTableview.refresh();
@@ -169,52 +213,83 @@ public class AppointmentScreenController implements Initializable {
     @FXML
     public void saveAppointment(ActionEvent event) {
 
+        boolean overlap = false;
+        ObservableList<Appointment> appointmentList = AppointmentDAO.getAllAppointments();
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
         String type = typeText.getText();
         int customerID = customerCombo.getSelectionModel().getSelectedItem().getCustomerID();
+        String customerName = customerCombo.getSelectionModel().getSelectedItem().getCustomerName();
         int userID = userCombo.getSelectionModel().getSelectedItem().getUserID();
         int contactID = contactCombo.getSelectionModel().getSelectedItem().getContactID();
 
+
         ZonedDateTime startTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), startHourCombo.getValue(), startMinuteCombo.getValue(), startPmRad.isSelected());
         ZonedDateTime endTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), endHourCombo.getValue(), endMinuteCombo.getValue(), endPmRad.isSelected());
+        ZonedDateTime sob = TimeUtils.getZonedStartOfBusiness(selectedDate.getValue());
+        ZonedDateTime eob = TimeUtils.getZonedEndOfBusiness(selectedDate.getValue());
 
-        if((startTime.isBefore(TimeUtils.getZonedStartOfBusiness(selectedDate.getValue())) || startTime.isAfter(TimeUtils.getZonedEndOfBusiness(selectedDate.getValue())))){
+        if(startTime.isBefore(sob) || startTime.isAfter(eob) || endTime.isBefore(sob) || endTime.isAfter(eob)){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Your appointment must start within business hours, which are daily from 8 am to 10pm, EST");
+            alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
             Optional<ButtonType> result = alert.showAndWait();
+        }
+        else {
+            for (Appointment appointment : appointmentList) {
+                ZonedDateTime appStartTime = appointment.getStartDate();
+                ZonedDateTime appEndTime = appointment.getEndDate();
 
-        }else if((endTime.isBefore(TimeUtils.getZonedStartOfBusiness(selectedDate.getValue())) || endTime.isAfter(TimeUtils.getZonedEndOfBusiness(selectedDate.getValue())))){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Your appointment must end within business hours, which are daily from 8 am to 10pm, EST");
-            Optional<ButtonType> result = alert.showAndWait();
+                boolean startTimeIsAfterAppStartTime = startTime.isAfter(appStartTime);
+                boolean startTImeIsBeforeAppEndTime = startTime.isBefore(appEndTime);
+                boolean endTimeIsAfterAppStartTime = endTime.isAfter(appStartTime);
+                boolean endTimeIsBeforeAppEndTime = endTime.isBefore(appEndTime);
+                boolean startTimeIsBeforeAppStartTime = startTime.isBefore(appStartTime);
+                boolean endTimeIsAfterAppEndTime = endTime.isAfter(appEndTime);
 
-        }else{
-            if(appointmentIDText.getText().isEmpty()){
-                AppointmentDAO.addAppointment(title, description, location, type, startTime, endTime, customerID, userID, contactID);
+
+
+                if (customerName.equals(appointment.getCustomerName()) &&
+                        ((startTimeIsAfterAppStartTime && startTImeIsBeforeAppEndTime ||
+                                (endTimeIsAfterAppStartTime && endTimeIsBeforeAppEndTime) //))) {
+                      || (startTimeIsBeforeAppStartTime && endTimeIsAfterAppEndTime) ))){
+                    overlap = true;
+                    String errorMessage = appointment.getCustomerName() + " already has another appointment at that time. It starts at: \n Start time : " + TimeUtils.timeFormat.format(appointment.getStartDate()) + "\nEnd Time: " + TimeUtils.timeFormat.format(appointment.getEndDate()) + ".";
+                    Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
+                    alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
+                    Optional<ButtonType> result = alert.showAndWait();
+                    break;
+                }
             }
-            else{
-                int appointmentID = Integer.parseInt(appointmentIDText.getText());
-                AppointmentDAO.updateAppointment(appointmentID, title, description, location, type, startTime, endTime, customerID, userID, contactID);
+
+            if(!overlap) {
+                if (appointmentIDText.getText().isEmpty()) {
+                    AppointmentDAO.addAppointment(title, description, location, type, startTime, endTime, customerID, userID, contactID);
+
+                } else {
+                    int appointmentID = Integer.parseInt(appointmentIDText.getText());
+                    AppointmentDAO.updateAppointment(appointmentID, title, description, location, type, startTime, endTime, customerID, userID, contactID);
+                }
+
+                appointmentTableview.getItems().clear();
+                AppointmentDAO.getAllAppointments();
+                appointmentTableview.refresh();
+                addAppointment(event);
             }
-            appointmentTableview.getItems().clear();
-            AppointmentDAO.getAllAppointments();
-            appointmentTableview.refresh();
-            addAppointment(event);
         }
     }
 
+
     @FXML
     public void exit(ActionEvent event) {
-        System.exit(0);
-/*
+
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?");
+    alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
+    Optional<ButtonType> result = alert.showAndWait();
 
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.isPresent() && result.get() == ButtonType.OK)  {
+    if(result.isPresent() && result.get() == ButtonType.OK)  {
             System.exit(0);
         }
- */
     }
 
     @FXML
@@ -229,7 +304,6 @@ public class AppointmentScreenController implements Initializable {
         appointmentTableview.getItems().clear();
         ObservableList<Appointment> currentWeekAppointmentList = AppointmentDAO.getCurrentWeekAppointments();
         appointmentTableview.setItems(currentWeekAppointmentList);
-
     }
 
     @FXML
@@ -244,8 +318,8 @@ public class AppointmentScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
 
-        appointmentTableview.setItems(appointmentList);
-        
+        appointmentTableview.setItems(AppointmentDAO.getAllAppointments());
+
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -271,7 +345,6 @@ public class AppointmentScreenController implements Initializable {
             };
             return cell;
         });
-
         startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         startTimeCol.setCellFactory(column -> {
             TableCell<Appointment, ZonedDateTime> cell = new TableCell<Appointment, ZonedDateTime>() {
@@ -289,7 +362,6 @@ public class AppointmentScreenController implements Initializable {
             };
             return cell;
         });
-
         endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         endTimeCol.setCellFactory(column -> {
             TableCell<Appointment, ZonedDateTime> cell = new TableCell<Appointment, ZonedDateTime>() {

@@ -2,16 +2,19 @@ package DAO;
 
 import Main.Main;
 import Model.Customer;
+import javafx.beans.binding.ObjectExpression;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class CustomerDAO {
 
     private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private static ObservableList<Customer> filteredCustomerList = FXCollections.observableArrayList();
 
     public static ObservableList<Customer> getAllCustomers() {
 
@@ -20,7 +23,7 @@ public class CustomerDAO {
         try {
 
             PreparedStatement ps = Main.conn.prepareStatement(
-                    "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Division, first_level_divisions.COUNTRY_ID, Country\n" +
+                    "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Division, first_level_divisions.COUNTRY_ID, Country, customers.Create_Date\n" +
                             "FROM customers, first_level_divisions, countries\n" +
                             "WHERE customers.Division_ID = first_level_divisions.Division_ID \n" +
                             "AND first_level_divisions.COUNTRY_ID = countries.Country_ID ORDER BY Customer_ID;");
@@ -40,8 +43,10 @@ public class CustomerDAO {
                 String division = rs.getString("Division");
                 int countryID = rs.getInt("COUNTRY_ID");
                 String country = rs.getString("Country");
+                LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
 
-                Customer newCustomer = new Customer(customerID, customerName, address, postalCode, phone, divisionID, division, countryID, country);
+
+                Customer newCustomer = new Customer(customerID, customerName, address, postalCode, phone, divisionID, division, countryID, country, createDate);
 
                 customerList.add(newCustomer);
             }
@@ -52,7 +57,6 @@ public class CustomerDAO {
 
         return customerList;
     }
-
 
     public static void addCustomer(String customerName, String address, String postalCode, String phone, int divisionID) {
 
