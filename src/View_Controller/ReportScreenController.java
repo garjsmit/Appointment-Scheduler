@@ -22,7 +22,9 @@ import utils.TimeUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -31,8 +33,13 @@ public class ReportScreenController implements Initializable {
 
     Stage stage;
     Parent scene;
-    ObservableList<Appointment> appointmentsByContact = FXCollections.observableArrayList();
-    ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private static ObservableList<Appointment> appointmentsByContact = FXCollections.observableArrayList();
+    private static ObservableList<String> months = FXCollections.observableArrayList("January" , "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    private static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private static ObservableList<Customer> customersFromLast30Days = FXCollections.observableArrayList();
+
+    @FXML
+    private Label currentYearReportLabel, planSessCountLabel, debriefingCountLabel, newCustCountLabel,  eventCountLabel, salesCallCountLabel;
 
     @FXML
     private TableView<Customer> reportCustomerTable;
@@ -59,7 +66,7 @@ public class ReportScreenController implements Initializable {
     private ComboBox<Contact> contactCombo;
 
     @FXML
-    private RadioButton appByTypeAndMonth, appByCurrentMonth, appByType;
+    private ComboBox<String> monthCombo;
 
     @FXML
     public void customerScreen(ActionEvent event) throws IOException {
@@ -78,23 +85,54 @@ public class ReportScreenController implements Initializable {
     }
 
     @FXML
-    void appointmentReport(ActionEvent event) {
-        //the total number of customer appointments by type and month
+    void populateTypeCountReport(ActionEvent event) {
+
+        int planningCount = 0, debriefingCount = 0, newCustCount = 0, eventCount = 0, salesCallCount = 0;
+        String selectedMonth = monthCombo.getValue();
+
+        ObservableList<Appointment> appointments = AppointmentDAO.getAppointmentsByMonth(selectedMonth);
+
+        for(Appointment appointment : appointments){
+            if(appointment.getType().equals("Planning Session")) {
+                planningCount++;
+            }
+            else if(appointment.getType().equals("De-Briefing")) {
+                debriefingCount++;
+                break;
+            }
+            else if(appointment.getType().equals("New Customer")) {
+                newCustCount++;
+                break;
+            }
+            else if(appointment.getType().equals("Event")) {
+                eventCount++;
+                break;
+            }
+            else if(appointment.getType().equals("Sales Call")) {
+                salesCallCount++;
+                break;
+            }
+            else {
+                System.out.println("No type found");
+                break;
+            }
+        }
+
+        planSessCountLabel.setText(String.valueOf(planningCount));
+        debriefingCountLabel.setText(String.valueOf(debriefingCount));
+        newCustCountLabel.setText(String.valueOf(newCustCount));
+        eventCountLabel.setText(String.valueOf(eventCount));
+        salesCallCountLabel.setText(String.valueOf(salesCallCount));
+
     }
 
     @FXML
-    void contactReport(ActionEvent event) {
-        System.out.println("Contact Report clicked!");
-        //a schedule for each contact in your organization that includes appointment ID, title, type and description, start date and time, end date and time, and customer ID
+    void contactSchedule(ActionEvent event) {
+
         int contactID = contactCombo.getSelectionModel().getSelectedItem().getContactID();
-
-        //appointmentsByContact = AppointmentDAO.getContactAppointments(contactID);
-
-    }
-
-    @FXML
-    void customerReport(ActionEvent event) {
-        //number of new customers added within thirty days
+        System.out.println(contactID);
+        appointmentsByContact = AppointmentDAO.getContactAppointments(contactID);
+        appointmentTableSetup(appointmentsByContact);
     }
 
     @FXML
@@ -108,12 +146,8 @@ public class ReportScreenController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-        contactCombo.setItems(ContactDAO.getAllContacts());
-        contactCombo.setPromptText("Select contact");
-
+    public void appointmentTableSetup(ObservableList<Appointment> appointmentList){
+        reportAppointmentTableview.setItems(appointmentList);
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -175,6 +209,35 @@ public class ReportScreenController implements Initializable {
             };
             return cell;
         });
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        currentYearReportLabel.setText("Last twelve months");
+
+        monthCombo.setPromptText("Select month");
+        monthCombo.setItems(months);
+
+        planSessCountLabel.setText("");
+        debriefingCountLabel.setText("");
+        newCustCountLabel.setText("");
+        eventCountLabel.setText("");
+        salesCallCountLabel.setText("");
+
+        contactCombo.setItems(ContactDAO.getAllContacts());
+        contactCombo.setPromptText("Select contact");
+
+        customersFromLast30Days = CustomerDAO.customersFromLast30Days();
+        reportCustomerTable.setItems(customersFromLast30Days);
+        customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        divisionIDCol.setCellValueFactory(new PropertyValueFactory<>("division"));
+
 
 
     }

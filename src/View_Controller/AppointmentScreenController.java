@@ -5,6 +5,7 @@ import DAO.ContactDAO;
 import DAO.CustomerDAO;
 import DAO.UserDAO;
 import Model.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,6 +34,7 @@ public class AppointmentScreenController implements Initializable {
     public static ObservableList<Contact> contacts = ContactDAO.getAllContacts();
     public static ObservableList<Customer> customers = CustomerDAO.getAllCustomers();
     public static ObservableList<User> users = UserDAO.getAllUsers();
+    public static ObservableList<String> type = FXCollections.observableArrayList("Planning Session", "De-Briefing", "New Customer", "Event", "Sales Call");
 
     @FXML
     private TableView<Appointment> appointmentTableview;
@@ -51,7 +53,10 @@ public class AppointmentScreenController implements Initializable {
     private GridPane formGrid;
 
     @FXML
-    private TextField appointmentIDText, titleText, descriptionText, locationText, typeText;
+    private TextField appointmentIDText, titleText, descriptionText, locationText;
+
+    @FXML
+    private ComboBox<String> typeCombo;
 
     @FXML
     private ComboBox<Integer> startHourCombo, startMinuteCombo, endHourCombo, endMinuteCombo;
@@ -98,7 +103,7 @@ public class AppointmentScreenController implements Initializable {
         titleText.setText("");
         descriptionText.setText("");
         locationText.setText("");
-        typeText.setText("");
+        typeCombo.setValue(null);
         contactCombo.setValue(null);
         customerCombo.setValue(null);
         userCombo.setValue(null);
@@ -126,7 +131,7 @@ public class AppointmentScreenController implements Initializable {
             titleText.setText(selectedAppointment.getTitle());
             descriptionText.setText(selectedAppointment.getDescription());
             locationText.setText(selectedAppointment.getLocation());
-            typeText.setText(selectedAppointment.getType());
+            typeCombo.setValue(selectedAppointment.getType());
 
             for(Contact contact : ContactDAO.getAllContacts()){
                 if(contact.getContactID() == selectedAppointment.getContactID()){
@@ -218,7 +223,7 @@ public class AppointmentScreenController implements Initializable {
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
-        String type = typeText.getText();
+        String type = typeCombo.getValue();
         int customerID = customerCombo.getSelectionModel().getSelectedItem().getCustomerID();
         String customerName = customerCombo.getSelectionModel().getSelectedItem().getCustomerName();
         int userID = userCombo.getSelectionModel().getSelectedItem().getUserID();
@@ -383,6 +388,7 @@ public class AppointmentScreenController implements Initializable {
         contactCombo.setItems(contacts);
         customerCombo.setItems(customers);
         userCombo.setItems(users);
+        typeCombo.setItems(type);
         startHourCombo.setItems(TimeUtils.getHours());
         startMinuteCombo.setItems(TimeUtils.getMinutes());
         endHourCombo.setItems(TimeUtils.getHours());

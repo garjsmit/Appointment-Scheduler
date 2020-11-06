@@ -2,6 +2,7 @@ package DAO;
 
 import Main.Main;
 import Model.Appointment;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -19,6 +20,7 @@ public class AppointmentDAO {
     private static ObservableList<Appointment> appointmentListByContact = FXCollections.observableArrayList();
     private static ObservableList<Appointment> currentMonthAppointmentList = FXCollections.observableArrayList();
     private static ObservableList<Appointment> currentWeekAppointmentList = FXCollections.observableArrayList();
+    private static ObservableList<Appointment> appointmentsByMonth = FXCollections.observableArrayList();
     private static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
     private static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm");
     private static ZoneId zid = ZoneId.systemDefault();
@@ -292,6 +294,51 @@ public class AppointmentDAO {
 
 
         return appointmentListByContact;
+    }
+
+    public static ObservableList<Appointment> getAppointmentsByMonth (String month){
+
+        appointmentsByMonth.clear();
+
+        String selectStatement = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, customers.Customer_ID, customers.Customer_Name, users.User_ID, users.User_Name, contacts.Contact_ID, contacts.Contact_Name\n" +
+                "                FROM appointments, customers, users, contacts\n" +
+                "                WHERE (SELECT MONTHNAME(Start)) = ?\n" +
+                "                AND appointments.Customer_ID = customers.Customer_ID\n" +
+                "                AND appointments.User_ID = users.User_ID\n" +
+                "                AND appointments.Contact_ID = contacts.Contact_ID\n" +
+                "                ORDER BY Appointment_ID;";
+
+
+        try {
+            PreparedStatement ps = Main.conn.prepareStatement(selectStatement);
+            ps.setString(1, month);
+            ps.execute();
+            ResultSet rs = ps.getResultSet();
+            while(rs.next()){
+                int appointmentID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                ZonedDateTime startDate = ZonedDateTime.of(rs.getTimestamp("Start").toLocalDateTime(), ZoneId.systemDefault());
+                ZonedDateTime endDate = ZonedDateTime.of(rs.getTimestamp("End").toLocalDateTime(), ZoneId.systemDefault());
+                int customerID = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                int userID = rs.getInt("User_ID");
+                String username = rs.getString("User_Name");
+                int contactID = rs.getInt("Contact_ID");
+                String contactName = rs.getString("Contact_Name");
+
+                Appointment newAppointment = new Appointment(appointmentID, title, description, type, location, startDate, endDate, customerID, customerName, userID, username,  contactID, contactName);
+                appointmentsByMonth.add(newAppointment);
+
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return appointmentsByMonth;
+
     }
 
     public static void addAppointment(String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, int customerID, int userID, int contactID){

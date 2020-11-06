@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class CustomerDAO {
 
     private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    private static ObservableList<Customer> filteredCustomerList = FXCollections.observableArrayList();
+    private static ObservableList<Customer> customersLast30Days = FXCollections.observableArrayList();
 
     public static ObservableList<Customer> getAllCustomers() {
 
@@ -51,11 +51,56 @@ public class CustomerDAO {
                 customerList.add(newCustomer);
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return customerList;
+    }
+
+    public static ObservableList<Customer> customersFromLast30Days() {
+
+        customersLast30Days.clear();
+
+        String selectStatement = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Division, first_level_divisions.COUNTRY_ID, Country, customers.Create_Date\n" +
+                "                            FROM customers, first_level_divisions, countries\n" +
+                "                            WHERE customers.Create_Date BETWEEN NOW() - INTERVAL 30 DAY AND NOW()\n" +
+                "                            AND customers.Division_ID = first_level_divisions.Division_ID\n" +
+                "                            AND first_level_divisions.COUNTRY_ID = countries.Country_ID ORDER BY Customer_ID;";
+
+        try {
+
+            PreparedStatement ps = Main.conn.prepareStatement(selectStatement);
+
+            ps.execute();
+
+            ResultSet rs = ps.getResultSet();
+
+            while (rs.next()) {
+
+                int customerID = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                String address = rs.getString("Address");
+                String postalCode = rs.getString("Postal_Code");
+                String phone = rs.getString("Phone");
+                int divisionID = rs.getInt("Division_ID");
+                String division = rs.getString("Division");
+                int countryID = rs.getInt("COUNTRY_ID");
+                String country = rs.getString("Country");
+                LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+
+
+                Customer newCustomer = new Customer(customerID, customerName, address, postalCode, phone, divisionID, division, countryID, country, createDate);
+
+                customersLast30Days.add(newCustomer);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customersLast30Days;
+
     }
 
     public static void addCustomer(String customerName, String address, String postalCode, String phone, int divisionID) {

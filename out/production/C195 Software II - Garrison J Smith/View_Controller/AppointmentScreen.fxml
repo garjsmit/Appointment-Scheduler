@@ -8,9 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="688.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
+<AnchorPane prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
    <children>
-      <TableView fx:id="appointmentTableview" editable="true" layoutX="55.0" layoutY="48.0" prefHeight="244.0" prefWidth="1202.0">
+      <TableView fx:id="appointmentTableview" editable="true" layoutX="50.0" layoutY="91.0" prefHeight="244.0" prefWidth="1202.0">
          <columns>
             <TableColumn fx:id="appointmentIDCol" prefWidth="41.0" text="ID" />
             <TableColumn fx:id="titleCol" prefWidth="94.0" text="Title" />
@@ -25,33 +25,89 @@
             <TableColumn fx:id="userCol" prefWidth="71.0" text="User" />
          </columns>
       </TableView>
-      <GridPane fx:id="formGrid" disable="true" layoutX="264.0" layoutY="356.0" prefHeight="137.0" prefWidth="800.0">
+      <GridPane fx:id="formGrid" disable="true" layoutX="202.0" layoutY="400.0" prefHeight="137.0" prefWidth="896.0">
          <children>
-            <Label text="Title" GridPane.rowIndex="1" />
-            <Label text="Description" GridPane.rowIndex="2" />
-            <Label text="Location" GridPane.rowIndex="3" />
-            <TextField fx:id="descriptionText" prefHeight="25.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="locationText" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="titleText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="Type" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Label text="Contact" GridPane.columnIndex="3" />
-            <ComboBox fx:id="contactCombo" prefWidth="150.0" GridPane.columnIndex="4" />
-            <Label text="Appointment ID" />
-            <TextField fx:id="appointmentIDText" disable="true" promptText="Auto-Generated" GridPane.columnIndex="1" />
-            <ComboBox fx:id="customerCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Label text="Customer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <ComboBox fx:id="userCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Label text="User" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Label text="Date" GridPane.columnIndex="6" />
-            <Label text="Start Time" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-            <Label text="End Time" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-            <DatePicker fx:id="selectedDate" editable="false" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="7" />
+            <Label prefHeight="15.0" prefWidth="32.0" text="Title" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <Label text="Description" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <Label text="Location" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <TextField fx:id="descriptionText" prefHeight="25.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></TextField>
+            <TextField fx:id="locationText" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></TextField>
+            <TextField fx:id="titleText" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></TextField>
+            <Label text="Type" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></Label>
+            <Label text="Contact" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></Label>
+            <ComboBox fx:id="contactCombo" prefWidth="150.0" GridPane.columnIndex="4">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></ComboBox>
+            <Label text="Appointment ID">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <TextField fx:id="appointmentIDText" disable="true" promptText="Auto-Generated" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></TextField>
+            <ComboBox fx:id="customerCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></ComboBox>
+            <Label text="Customer" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <ComboBox fx:id="userCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></ComboBox>
+            <Label text="User" GridPane.columnIndex="3" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></Label>
+            <Label text="Date" GridPane.columnIndex="6">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></Label>
+            <Label text="Start Time" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <Label text="End Time" GridPane.columnIndex="6" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Label>
+            <DatePicker fx:id="selectedDate" editable="false" prefHeight="25.0" prefWidth="119.0" GridPane.columnIndex="7">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin></DatePicker>
             <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#saveAppointment" text="Save" GridPane.columnIndex="7" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets left="80.0" />
+                  <Insets right="20.0" />
                </GridPane.margin>
             </Button>
-            <TextField fx:id="typeText" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1">
                <children>
                   <ComboBox fx:id="startHourCombo" prefHeight="25.0" prefWidth="80.0" />
@@ -78,16 +134,61 @@
                   </HBox>
                </children>
             </HBox>
+            <ComboBox fx:id="typeCombo" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></ComboBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="1">
+               <children>
+                  <RadioButton fx:id="startAmRad" mnemonicParsing="false" text="AM">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="startTimeTG" />
+                     </toggleGroup>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="startPmRad" mnemonicParsing="false" text="PM" toggleGroup="$startTimeTG">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
+               <children>
+                  <RadioButton fx:id="endAmRad" mnemonicParsing="false" text="AM">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="endTimeTG" />
+                     </toggleGroup>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="endPmRad" mnemonicParsing="false" text="PM" toggleGroup="$endTimeTG">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </RadioButton>
+               </children>
+            </HBox>
          </children>
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="107.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="158.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="0.0" prefWidth="31.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.0" minWidth="10.0" prefWidth="111.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="144.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="327.0" minWidth="10.0" prefWidth="40.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="84.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="10.0" prefWidth="111.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="136.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="0.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.0" minWidth="10.0" prefWidth="72.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="153.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" percentWidth="0.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="0.0" prefWidth="70.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="141.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="101.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -96,38 +197,74 @@
             <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button layoutX="297.0" layoutY="604.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
-      <Button layoutX="785.0" layoutY="302.0" mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment" />
-      <Button layoutX="934.0" layoutY="303.0" mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment" />
-      <Button layoutX="1106.0" layoutY="303.0" mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment" />
       <Label fx:id="selectAppointmentLabel" layoutX="888.0" layoutY="335.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="328.0" layoutY="304.0" prefHeight="21.0" prefWidth="103.0" text="Show only:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <RadioButton fx:id="currentMonthRadio" layoutX="431.0" layoutY="307.0" mnemonicParsing="false" onAction="#filterByMonth" text="Current Month">
-         <toggleGroup>
-            <ToggleGroup fx:id="filterTG" />
-         </toggleGroup></RadioButton>
-      <RadioButton fx:id="currentWeekRadio" layoutX="557.0" layoutY="307.0" mnemonicParsing="false" onAction="#filterByWeek" text="Current Week" toggleGroup="$filterTG" />
-      <RadioButton fx:id="showAllRadio" layoutX="680.0" layoutY="307.0" mnemonicParsing="false" onAction="#showAll" text="Show All" toggleGroup="$filterTG" />
-      <RadioButton fx:id="startAmRad" layoutX="1064.0" layoutY="400.0" mnemonicParsing="false" text="AM">
-         <toggleGroup>
-            <ToggleGroup fx:id="startTimeTG" />
-         </toggleGroup>
-      </RadioButton>
-      <RadioButton fx:id="startPmRad" layoutX="1115.0" layoutY="400.0" mnemonicParsing="false" text="PM" toggleGroup="$startTimeTG" />
-      <RadioButton fx:id="endAmRad" layoutX="1064.0" layoutY="431.0" mnemonicParsing="false" text="AM">
-         <toggleGroup>
-            <ToggleGroup fx:id="endTimeTG" />
-         </toggleGroup></RadioButton>
-      <RadioButton fx:id="endPmRad" layoutX="1115.0" layoutY="431.0" mnemonicParsing="false" text="PM" toggleGroup="$endTimeTG" />
-      <Button fx:id="customerScreen" layoutX="70.0" layoutY="604.0" mnemonicParsing="false" onAction="#customerScreen" text="Customers" />
-      <Button fx:id="reportScreen" layoutX="195.0" layoutY="604.0" mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
+      <HBox layoutX="138.0" layoutY="39.0" prefHeight="37.0" prefWidth="392.0">
+         <children>
+            <Label text="Appointments">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="customerScreen" mnemonicParsing="false" onAction="#customerScreen" text="Customers">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="reportScreen" mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
+         </children>
+      </HBox>
+      <HBox layoutX="327.0" layoutY="344.0" prefHeight="25.0" prefWidth="925.0">
+         <children>
+            <Label prefHeight="21.0" prefWidth="103.0" text="Show only:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="currentMonthRadio" mnemonicParsing="false" onAction="#filterByMonth" text="Current Month">
+               <toggleGroup>
+                  <ToggleGroup fx:id="filterTG" />
+               </toggleGroup>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="currentWeekRadio" mnemonicParsing="false" onAction="#filterByWeek" text="Current Week" toggleGroup="$filterTG">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="showAllRadio" mnemonicParsing="false" onAction="#showAll" text="Show All" toggleGroup="$filterTG">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </RadioButton>
+            <Button mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <Button layoutX="1101.0" layoutY="662.0" mnemonicParsing="false" onAction="#exit" prefHeight="58.0" prefWidth="96.0" text="Exit" />
    </children>
 </AnchorPane>

@@ -42,7 +42,6 @@ public class FirstLevelDivisionDAO {
         return firstLevelDivisionList;
     }
 
-
     public static ObservableList<FirstLevelDivision> getSelectedFirstLevelDivisions(int selectedCountryID) {
 
         firstLevelDivisionList.clear();
