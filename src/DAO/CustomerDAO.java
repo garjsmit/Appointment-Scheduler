@@ -11,11 +11,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**Customer DAO*/
 public class CustomerDAO {
 
     private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private static ObservableList<Customer> customersLast30Days = FXCollections.observableArrayList();
 
+    /**
+     * @return customerList
+     * This is a list of all customers.
+     * */
     public static ObservableList<Customer> getAllCustomers() {
 
         customerList.clear();
@@ -58,6 +63,10 @@ public class CustomerDAO {
         return customerList;
     }
 
+    /**
+     * @return customersLast30Days
+     * This is a list of customers added in the last 30 days.
+     * */
     public static ObservableList<Customer> customersFromLast30Days() {
 
         customersLast30Days.clear();
@@ -103,6 +112,13 @@ public class CustomerDAO {
 
     }
 
+    /**
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param phone
+     * @param divisionID
+     * Adds new customer to database. customerID is assigned by database. */
     public static void addCustomer(String customerName, String address, String postalCode, String phone, int divisionID) {
 
         String insertStatement = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
@@ -122,6 +138,14 @@ public class CustomerDAO {
         }
     }
 
+    /**
+     * @param customerID
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param phone
+     * @param divisionID
+     * Updates existing customer to database. Finds existing record by matching customerID. */
     public static void updateCustomer(int customerID, String customerName, String address, String postalCode, String phone, int divisionID) {
         String updateStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?,  Phone = ?,  Division_ID = ? WHERE Customer_ID = ?";
 
@@ -141,6 +165,9 @@ public class CustomerDAO {
       }
     }
 
+    /**
+     *  @param customerID
+    *   Deletes existing customer from database. Finds existing record by matching customerID. */
     public static void deleteCustomer(int customerID)  {
         String deleteStatement = "DELETE FROM customers WHERE Customer_ID = ?";
 
@@ -154,6 +181,7 @@ public class CustomerDAO {
             e.printStackTrace();
         }
     }
+
 
 
 }

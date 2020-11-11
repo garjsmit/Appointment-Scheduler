@@ -11,10 +11,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** First Level Division DAO */
 public class FirstLevelDivisionDAO {
 
     private static ObservableList<FirstLevelDivision> firstLevelDivisionList = FXCollections.observableArrayList();
 
+    /**
+     * @return firstLevelDivisionList
+     * This is a list of all first level divisions*/
     public static ObservableList<FirstLevelDivision> getAllFirstLevelDivisions() {
 
         firstLevelDivisionList.clear();
@@ -42,6 +46,10 @@ public class FirstLevelDivisionDAO {
         return firstLevelDivisionList;
     }
 
+    /**
+     * @param selectedCountryID user selects country
+     * @return firstLevelDivisionList
+     * This is a list of all first level divisions associated with selected country*/
     public static ObservableList<FirstLevelDivision> getSelectedFirstLevelDivisions(int selectedCountryID) {
 
         firstLevelDivisionList.clear();

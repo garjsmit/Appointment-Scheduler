@@ -29,6 +29,7 @@ import java.util.Formatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Report Screen Controller */
 public class ReportScreenController implements Initializable {
 
     Stage stage;
@@ -68,6 +69,10 @@ public class ReportScreenController implements Initializable {
     @FXML
     private ComboBox<String> monthCombo;
 
+
+    /**
+     * Customer Button event handler
+     * */
     @FXML
     public void customerScreen(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -76,6 +81,9 @@ public class ReportScreenController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Appointment Screen button event handler
+     * */
     @FXML
     public void appointmentScreen(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -84,6 +92,9 @@ public class ReportScreenController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Select Month event handler. Returns the meeting type counts for the selected months
+     * */
     @FXML
     void populateTypeCountReport(ActionEvent event) {
 
@@ -126,6 +137,9 @@ public class ReportScreenController implements Initializable {
 
     }
 
+    /**
+     * Contact schedule event handler. Populates appointment tableview for the selected contact.
+     * */
     @FXML
     void contactSchedule(ActionEvent event) {
 
@@ -135,6 +149,9 @@ public class ReportScreenController implements Initializable {
         appointmentTableSetup(appointmentsByContact);
     }
 
+    /**
+     * Exit button event handler. Asks for confirmation before exiting.
+     * */
     @FXML
     void exit(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?");
@@ -146,6 +163,7 @@ public class ReportScreenController implements Initializable {
         }
     }
 
+    /** Initializes the appointment table columns */
     public void appointmentTableSetup(ObservableList<Appointment> appointmentList){
         reportAppointmentTableview.setItems(appointmentList);
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -212,6 +230,7 @@ public class ReportScreenController implements Initializable {
 
     }
 
+    /** Intialize */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -238,8 +257,5 @@ public class ReportScreenController implements Initializable {
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         divisionIDCol.setCellValueFactory(new PropertyValueFactory<>("division"));
 
-
-
     }
-
 }

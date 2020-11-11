@@ -31,6 +31,7 @@ import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
 
+/** Customer Screen Controller */
 public class CustomerScreenController implements Initializable {
 
     Stage stage;
@@ -65,9 +66,9 @@ public class CustomerScreenController implements Initializable {
     @FXML
     private Label pleaseSelectCustomerLabel;
 
-    public CustomerScreenController() throws SQLException {
-    }
-
+    /**
+     * Appointment Screen button event handler
+     * */
     @FXML
     public void appointmentScreen(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -76,6 +77,7 @@ public class CustomerScreenController implements Initializable {
         stage.show();
     }
 
+    /** Report Screen button event handler */
     @FXML
     public void reportScreen(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -84,7 +86,7 @@ public class CustomerScreenController implements Initializable {
         stage.show();
     }
 
-
+    /** Add Customer button event handler. Enables customer information's text fields */
     @FXML
     public void addCustomer(ActionEvent event) {
         formGrid.setDisable(false);
@@ -97,6 +99,7 @@ public class CustomerScreenController implements Initializable {
         divisionCombo.setValue(null);
     }
 
+    /** Save Customer button event handler. Saves customer information's text fields to Customer database. Creates new customer if customerID is null, overwrites existing information if customerID is not null.*/
     @FXML
     public void saveCustomer(ActionEvent event) throws SQLException {
 
@@ -123,6 +126,7 @@ public class CustomerScreenController implements Initializable {
             addCustomer(event);
     }
 
+    /** Populates form text fields with selected customer information */
     @FXML
     public void updateCustomer(ActionEvent event) throws SQLException {
 
@@ -159,6 +163,7 @@ public class CustomerScreenController implements Initializable {
         }
     }
 
+    /** Country ComboBox event handler. Populates first level division with associated countries after a country has been selected */
     @FXML
     private void populateDivision() throws SQLException {
         try {
@@ -169,6 +174,7 @@ public class CustomerScreenController implements Initializable {
         }
     }
 
+    /** Delete Customer button handler. Warns user that existing customer appointments from database will be deleted, deletes appointments then deletes customer from database */
     @FXML
     public void deleteCustomer(ActionEvent event) throws SQLException {
 
@@ -203,6 +209,9 @@ public class CustomerScreenController implements Initializable {
         customerTable.refresh();
     }
 
+    /**
+     * Exit button event handler. Asks for confirmation before exiting.
+     * */
     @FXML
     public void exit(ActionEvent event) {
         System.exit(0);
@@ -216,6 +225,7 @@ public class CustomerScreenController implements Initializable {
         }
     }
 
+    /** Initializes tableview and comboboxes */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

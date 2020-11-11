@@ -88,23 +88,30 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <HBox layoutX="138.0" layoutY="29.0" prefHeight="37.0" prefWidth="392.0">
+      <HBox layoutX="165.0" layoutY="727.0" prefHeight="37.0" prefWidth="392.0">
          <children>
-            <Label text="Customers">
+            <HBox prefHeight="100.0" prefWidth="269.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+      <GridPane alignment="CENTER" layoutX="148.0" layoutY="49.0" prefHeight="30.0" prefWidth="450.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#reportScreen" text="Reports" GridPane.columnIndex="2" />
+            <Label prefHeight="29.0" prefWidth="145.0" text="Customers">
                <font>
                   <Font size="24.0" />
                </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
             </Label>
-            <Button fx:id="appointmentScreen" mnemonicParsing="false" onAction="#appointmentScreen" text="Appointments">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
+            <Button fx:id="appointmentScreen" mnemonicParsing="false" onAction="#appointmentScreen" text="Appointments" GridPane.columnIndex="1" />
          </children>
-      </HBox>
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
    </children>
 </AnchorPane>

@@ -7,6 +7,7 @@ import javafx.scene.control.ComboBox;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+/** Class for holding Time Utilities */
 public class TimeUtils {
 
    public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy");
@@ -18,28 +19,57 @@ public class TimeUtils {
    private static LocalTime SOB= LocalTime.of(8, 00);
    private static LocalTime EOB = LocalTime.of(22, 00);
 
+   /**
+    * @return hours
+    */
    public static ObservableList<Integer> getHours() {
       return hours;
    }
 
+   /**
+    * @return minutes
+    */
    public static ObservableList<Integer> getMinutes() {
       return minutes;
    }
 
+   /**
+    * @return SOB
+    */
    public static LocalTime getStartOfBusiness() {
       return SOB;
    }
 
-   public static LocalTime getEndOfBusiness() { return EOB; }
+   /**
+    * @return EOB
+    */
+   public static LocalTime getEndOfBusiness() {
+      return EOB;
+   }
 
+   /**
+    * @param date uses current or selected date
+    * @return zonedStartOfBusiness. returns start of business as the system default timezone
+    * */
    public static ZonedDateTime getZonedStartOfBusiness(LocalDate date){
       return ZonedDateTime.of(date, SOB,  ZoneId.of("America/New_York")).withZoneSameInstant(ZoneId.systemDefault());
    }
 
+   /**
+    * @param date uses current or selected date
+    * @return zonedEndOfBusiness. returns start of business as the system default timezone
+    * */
    public static ZonedDateTime getZonedEndOfBusiness(LocalDate date){
       return ZonedDateTime.of(date, EOB, ZoneId.of("America/New_York")).withZoneSameInstant(ZoneId.systemDefault());
    }
 
+   /**
+    * @param date
+    * @param hour
+    * @param min
+    * @param pmTrue
+    * @return zDateTime Uses individual hour, minute, and am/pm selections and system default to create ZonedTimeDate
+    * */
    public static ZonedDateTime figureZonedDateTime(LocalDate date, int hour, int min, boolean pmTrue){
 
       LocalTime time;

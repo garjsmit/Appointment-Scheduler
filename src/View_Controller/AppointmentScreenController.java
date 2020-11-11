@@ -20,13 +20,15 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import utils.TimeUtils;
 
+import javax.security.auth.callback.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/** Appointment Screen Controller  */
 public class AppointmentScreenController implements Initializable {
 
     Stage stage;
@@ -87,6 +89,9 @@ public class AppointmentScreenController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Report Button event handler
+     * */
     @FXML
     public void reportScreen(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -95,6 +100,9 @@ public class AppointmentScreenController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Add Appointment button event handler. Enables editing of text fields
+     * */
     @FXML
     public void addAppointment(ActionEvent event) {
 
@@ -115,6 +123,9 @@ public class AppointmentScreenController implements Initializable {
 
     }
 
+    /**
+     * Update Appointment button event handler. Populates text fields with selected appointment information
+     * */
     @FXML
     public void updateAppointment(ActionEvent event) {
 
@@ -186,6 +197,9 @@ public class AppointmentScreenController implements Initializable {
         }
     }
 
+    /**
+     * Delete Appointment button event handler. Deletes selected appointment
+     * */
     @FXML
     public void deleteAppointment(ActionEvent event) {
 
@@ -215,17 +229,20 @@ public class AppointmentScreenController implements Initializable {
 
     }
 
+    /**
+     * Save Appointment button event handler. Saves text fields to database. Creates new appointment, or overwrites existing information if appointment isn't null.
+     * */
     @FXML
     public void saveAppointment(ActionEvent event) {
 
         boolean overlap = false;
-        ObservableList<Appointment> appointmentList = AppointmentDAO.getAllAppointments();
+        int selectedCustomerID = customerCombo.getValue().getCustomerID();
+        ArrayList<Appointment> customerAppointments = AppointmentDAO.getCustomerAppointments(selectedCustomerID);
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
         String type = typeCombo.getValue();
         int customerID = customerCombo.getSelectionModel().getSelectedItem().getCustomerID();
-        String customerName = customerCombo.getSelectionModel().getSelectedItem().getCustomerName();
         int userID = userCombo.getSelectionModel().getSelectedItem().getUserID();
         int contactID = contactCombo.getSelectionModel().getSelectedItem().getContactID();
 
@@ -241,25 +258,29 @@ public class AppointmentScreenController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
         }
         else {
-            for (Appointment appointment : appointmentList) {
+
+            for (Appointment appointment : customerAppointments) {
+
                 ZonedDateTime appStartTime = appointment.getStartDate();
                 ZonedDateTime appEndTime = appointment.getEndDate();
 
                 boolean startTimeIsAfterAppStartTime = startTime.isAfter(appStartTime);
-                boolean startTImeIsBeforeAppEndTime = startTime.isBefore(appEndTime);
+                boolean startTimeIsBeforeAppEndTime = startTime.isBefore(appEndTime);
                 boolean endTimeIsAfterAppStartTime = endTime.isAfter(appStartTime);
                 boolean endTimeIsBeforeAppEndTime = endTime.isBefore(appEndTime);
                 boolean startTimeIsBeforeAppStartTime = startTime.isBefore(appStartTime);
                 boolean endTimeIsAfterAppEndTime = endTime.isAfter(appEndTime);
+                boolean startTimeEqualsStartTime = startTime.equals(appStartTime);
+                boolean endTimeEqualsEndTime = endTime.equals(appEndTime);
 
-
-
-                if (customerName.equals(appointment.getCustomerName()) &&
-                        ((startTimeIsAfterAppStartTime && startTImeIsBeforeAppEndTime ||
-                                (endTimeIsAfterAppStartTime && endTimeIsBeforeAppEndTime) //))) {
-                      || (startTimeIsBeforeAppStartTime && endTimeIsAfterAppEndTime) ))){
+                if ((appointment.getAppointmentID() != Integer.parseInt(appointmentIDText.getText()) &&
+                        ((startTimeIsAfterAppStartTime && startTimeIsBeforeAppEndTime ||
+                                (endTimeIsAfterAppStartTime && endTimeIsBeforeAppEndTime) ||
+                                (startTimeIsBeforeAppStartTime && endTimeIsAfterAppEndTime) ||
+                                startTimeEqualsStartTime ||
+                                endTimeEqualsEndTime)))){
                     overlap = true;
-                    String errorMessage = appointment.getCustomerName() + " already has another appointment at that time. It starts at: \n Start time : " + TimeUtils.timeFormat.format(appointment.getStartDate()) + "\nEnd Time: " + TimeUtils.timeFormat.format(appointment.getEndDate()) + ".";
+                    String errorMessage = appointment.getCustomerName() + " already has another appointment at that time. It's at: \n Start time : " + TimeUtils.timeFormat.format(appointment.getStartDate()) + "\nEnd Time: " + TimeUtils.timeFormat.format(appointment.getEndDate()) + ".";
                     Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
                     alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
                     Optional<ButtonType> result = alert.showAndWait();
@@ -284,7 +305,10 @@ public class AppointmentScreenController implements Initializable {
         }
     }
 
-
+    /**
+     * Exit button event handler. Asks for confirmation before exiting.
+     * Lambda expression for resizing of the error dialog boxes.
+     * */
     @FXML
     public void exit(ActionEvent event) {
 
@@ -297,6 +321,7 @@ public class AppointmentScreenController implements Initializable {
         }
     }
 
+    /** Show Current Month radio button event handler. Refreshes tableview to only show those scheduled in current month*/
     @FXML
     void filterByMonth(ActionEvent event) {
         appointmentTableview.getItems().clear();
@@ -304,6 +329,7 @@ public class AppointmentScreenController implements Initializable {
         appointmentTableview.setItems(currentMonthAppointmentList);
     }
 
+    /** Show Current Week radio button event handler. Refreshes tableview to only show those scheduled in current week*/
     @FXML
     void filterByWeek(ActionEvent event) {
         appointmentTableview.getItems().clear();
@@ -311,6 +337,7 @@ public class AppointmentScreenController implements Initializable {
         appointmentTableview.setItems(currentWeekAppointmentList);
     }
 
+    /** Show All radio button event handler. Refreshes tableview to show all appointments*/
     @FXML
     void showAll(ActionEvent event) {
 
@@ -319,6 +346,10 @@ public class AppointmentScreenController implements Initializable {
         appointmentTableview.refresh();
 
     }
+
+    /** Initialize tableviews and ComboBoxes
+     * Lambda expression used here to format the time in the Date, Start Time,  and End Time columns in the Appointments TableView.
+     * */
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -393,7 +424,6 @@ public class AppointmentScreenController implements Initializable {
         startMinuteCombo.setItems(TimeUtils.getMinutes());
         endHourCombo.setItems(TimeUtils.getHours());
         endMinuteCombo.setItems(TimeUtils.getMinutes());
-
 
     }
 

@@ -9,11 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/** User DAO */
 public class UserDAO {
 
     private static ObservableList<User> userList = FXCollections.observableArrayList();
     private static User foundUser;
 
+    /**
+     * @return userList
+     * This is a list of all users*/
     public static ObservableList<User> getAllUsers() {
 
         userList.clear();
@@ -41,11 +45,18 @@ public class UserDAO {
         return userList;
     }
 
+    /**
+     * @return userList
+     * This is a list of all users*/
     public static User getUserByName(String username)  {
+
+        String selectStatement = "SELECT User_ID, Password FROM users WHERE User_Name = ?";
+
         try {
-            PreparedStatement ps = Main.Main.conn.prepareStatement("SELECT User_ID, Password FROM users WHERE User_Name = ?");
+            PreparedStatement ps = Main.Main.conn.prepareStatement(selectStatement);
 
             ps.setString(1, String.valueOf(username));
+
             ps.execute();
 
             ResultSet rs = ps.getResultSet();

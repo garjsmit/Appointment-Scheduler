@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/***Appointment DAO */
 public class AppointmentDAO {
 
     private static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -25,6 +26,9 @@ public class AppointmentDAO {
     private static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("hh:mm");
     private static ZoneId zid = ZoneId.systemDefault();
 
+    /**
+     * @return Returns ObservableList<Appointment> appointmentList. This is a list of all appointments.
+     * */
     public static ObservableList<Appointment> getAllAppointments(){
 
         appointmentList.clear();
@@ -70,6 +74,9 @@ public class AppointmentDAO {
         return appointmentList;
     }
 
+    /**
+     * @return Returns ObservableList<Appointment> currentMonthAppointmentList. This is a list of all appointments in the current month.
+     * */
     public static ObservableList<Appointment> getCurrentMonthAppointments() {
 
         currentMonthAppointmentList.clear();
@@ -112,6 +119,9 @@ public class AppointmentDAO {
 
     }
 
+    /**
+     * @return Returns ObservableList<Appointment> currentWeekAppointmentList. This is a list of all appointments in the current week.
+     * */
     public static ObservableList<Appointment> getCurrentWeekAppointments() {
 
         currentWeekAppointmentList.clear();
@@ -154,6 +164,10 @@ public class AppointmentDAO {
 
     }
 
+    /**
+     * @param userID
+     * @return Returns ObservableList<Appointment> appointmentListByUser. Returns all appointments that related with matching userID.
+     * */
     public static ObservableList<Appointment> getUserAppointments(int userID){
 
         appointmentListByUser.clear();
@@ -201,6 +215,10 @@ public class AppointmentDAO {
         return appointmentListByUser;
     }
 
+    /**
+     * @param custID
+     * @return Returns ArrayList<Appointment> appointmentListByCustomer. Returns all appointments that related with matching custID.
+     * */
     public static ArrayList<Appointment> getCustomerAppointments(int custID){
 
         appointmentListByCustomer.clear();
@@ -249,6 +267,10 @@ public class AppointmentDAO {
         return appointmentListByCustomer;
     }
 
+    /**
+     * @param contactID
+     * @return Returns ObservableList<Appointment> appointmentListByContact. Returns all appointments that related with matching contactID.
+     * */
     public static ObservableList<Appointment> getContactAppointments(int contactID) {
 
         appointmentListByContact.clear();
@@ -296,6 +318,10 @@ public class AppointmentDAO {
         return appointmentListByContact;
     }
 
+    /**
+     * @param month
+     * @return Returns ObservableList<Appointment> appointmentsByMonth. Extracts the string value in the Create_Date column of the appointments database, and returns all appointment that match the user's selection.
+     * */
     public static ObservableList<Appointment> getAppointmentsByMonth (String month){
 
         appointmentsByMonth.clear();
@@ -341,6 +367,17 @@ public class AppointmentDAO {
 
     }
 
+    /**
+     * @param title meeting title
+     * @param description meeting description
+     * @param location meeting location
+     * @param type one of five choices "Planning Session", "De-Briefing", "New Customer", "Event", "Sales Call"
+     * @param start start time of meeting as a ZonedTimeDate @ system default
+     * @param end end time of meeting as a ZonedTimeDate @ system default
+     * @param customerID customerID of meeting
+     * @param userID staff member ID for whom meeting is
+     * @param contactID contact ID for meeting
+     * Creates new record in the appointment table. AppointmentID assigned by database*/
     public static void addAppointment(String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, int customerID, int userID, int contactID){
 
         try {
@@ -366,6 +403,18 @@ public class AppointmentDAO {
         }
     }
 
+    /**
+     * @param appointmentID auto-increment assigned by database. Used here to find appointment
+     * @param title meeting title
+     * @param description meeting description
+     * @param location meeting location
+     * @param type one of five choices "Planning Session", "De-Briefing", "New Customer", "Event", "Sales Call"
+     * @param start start time of meeting as a ZonedTimeDate @ system default
+     * @param end end time of meeting as a ZonedTimeDate @ system default
+     * @param customerID customerID of meeting
+     * @param userID staff member ID for whom meeting is
+     * @param contactID contact ID for meeting
+     * Updates existing record in database. Locates appointment by appointmentID*/
     public static void updateAppointment(int appointmentID, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, int customerID, int userID, int contactID){
 
         String updateStatement = "UPDATE appointments SET " +
@@ -392,6 +441,9 @@ public class AppointmentDAO {
         }
     }
 
+    /**
+     * @param appointmentID auto-increment assigned by database. Used here to find appointment
+     * Deletes existing appointment in database. Locates appointment by appointmentID*/
     public static void deleteAppointment(int appointmentID){
         String deleteStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
 

@@ -18,8 +18,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        ResourceBundle rb = ResourceBundle.getBundle("utils/Nat", Locale.getDefault());
+
         Parent root = FXMLLoader.load(getClass().getResource("../View_Controller/LoginScreen.fxml"));
-        primaryStage.setTitle("Appointment Manager");
+        if(Locale.getDefault().getLanguage().equals("fr")){
+            primaryStage.setTitle("Responsable des rendez-vous");
+        }
+        else{
+            primaryStage.setTitle("Appointment Manager");
+        }
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }

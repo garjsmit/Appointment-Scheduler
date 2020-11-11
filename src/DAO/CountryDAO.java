@@ -9,10 +9,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**Country DAO*/
 public class CountryDAO {
 
     private static ObservableList<Country> countryList = FXCollections.observableArrayList();
 
+    /**
+     * @return      ObservableList<Country> countryList
+     * Gets list of all countries from country table
+     */
     public static ObservableList<Country> getAllCountries(){
 
         countryList.clear();

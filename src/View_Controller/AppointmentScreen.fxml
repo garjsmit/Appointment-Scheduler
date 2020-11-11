@@ -187,8 +187,8 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="153.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" percentWidth="0.0" prefWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="0.0" prefWidth="70.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="141.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="101.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="168.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="96.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -202,24 +202,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <HBox layoutX="138.0" layoutY="39.0" prefHeight="37.0" prefWidth="392.0">
-         <children>
-            <Label text="Appointments">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Label>
-            <Button fx:id="customerScreen" mnemonicParsing="false" onAction="#customerScreen" text="Customers">
-               <HBox.margin>
-                  <Insets right="20.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="reportScreen" mnemonicParsing="false" onAction="#reportScreen" text="Reports" />
-         </children>
-      </HBox>
       <HBox layoutX="327.0" layoutY="344.0" prefHeight="25.0" prefWidth="925.0">
          <children>
             <Label prefHeight="21.0" prefWidth="103.0" text="Show only:">
@@ -266,5 +248,24 @@
          </children>
       </HBox>
       <Button layoutX="1101.0" layoutY="662.0" mnemonicParsing="false" onAction="#exit" prefHeight="58.0" prefWidth="96.0" text="Exit" />
+      <GridPane alignment="CENTER" layoutX="148.0" layoutY="49.0" prefHeight="30.0" prefWidth="450.0">
+         <children>
+            <Button fx:id="customerScreen" mnemonicParsing="false" onAction="#customerScreen" text="Customers" />
+            <Button fx:id="reportScreen" mnemonicParsing="false" onAction="#reportScreen" text="Reports" GridPane.columnIndex="2" />
+            <Label text="Appointments" GridPane.columnIndex="1">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="135.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
    </children>
 </AnchorPane>

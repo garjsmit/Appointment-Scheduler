@@ -8,10 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**Contact class*/
 public class ContactDAO {
+
 
     private static ObservableList<Contact> contactList = FXCollections.observableArrayList();
 
+    /**
+     * @return contactListi
+     * Returns list of all contacts from contacts table
+     * */
     public static ObservableList<Contact> getAllContacts(){
 
         String selectStatement = "SELECT * FROM contacts";

@@ -1,5 +1,6 @@
 package Model;
 
+/**FirstLevelDivision class*/
 public class FirstLevelDivision {
 
 
@@ -12,19 +13,30 @@ public class FirstLevelDivision {
         this.division = division;
     }
 
-
+    /**
+     * @return Returns divisionID.
+     * */
     public int getDivisionID() {
         return divisionID;
     }
 
+    /**
+     * @return Returns countryID.
+     * */
     public int getCountryID() {
         return countryID;
     }
 
+    /**
+     * @return Returns division.
+     * */
     public String getDivision() {
         return division;
     }
 
+    /**
+     * @return Returns String division.
+     * */
     @Override
     public String toString(){
         return (division);
