@@ -14,6 +14,7 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -57,8 +58,10 @@ public class LoginScreenController implements Initializable {
         PrintWriter recLoginAttempts = new PrintWriter(createLogFile);
         String usernameAttempt = userIDText.getText();
         String passwordAttempt = passwordText.getText();
+        int userID = -1;
+        String username = "";
 
-
+        //if username or password are left blank
         if (usernameAttempt.equals("") || passwordAttempt.equals("")) {
 
             if(usernameAttempt.equals("")) { usernameAttempt = "NULL"; }
@@ -73,10 +76,25 @@ public class LoginScreenController implements Initializable {
             return;
         }
 
-        int userID = UserDAO.getUserByName(usernameAttempt).getUserID();
+        //if user enter incorrect username
+        if(UserDAO.getUserByName(usernameAttempt) != null){
+            userID = UserDAO.getUserByName(usernameAttempt).getUserID();
+            username = UserDAO.getUserByName(usernameAttempt).getUsername();
+        }
+        else{
+            loginLogEntry = usernameAttempt + " on " + ZonedDateTime.now().format(dateFormat) + " @ " + ZonedDateTime.now().format(timeFormat) + " UNSUCCESSFUL";
+            recLoginAttempts.println(loginLogEntry);
+            recLoginAttempts.close();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, enterValidUserPass);
+            alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
+            Optional<ButtonType> result = alert.showAndWait();
+            return;
+        }
         String password = UserDAO.getUserByName(usernameAttempt).getPassword();
 
-        if (passwordAttempt.equals(password)) {
+        //if user enters correct
+        if (usernameAttempt.equals(username) && passwordAttempt.equals(password)) {
 
             loginLogEntry = usernameAttempt + " on " + ZonedDateTime.now().format(dateFormat) + " @ " + ZonedDateTime.now().format(timeFormat) + " SUCCESSFUL";
             recLoginAttempts.println(loginLogEntry);
@@ -90,7 +108,7 @@ public class LoginScreenController implements Initializable {
             long timeDifference;
 
             for (Appointment appointment : AppointmentDAO.getUserAppointments(userID)) {
-                timeDifference = ChronoUnit.MINUTES.between(appointment.getStartDate().toLocalTime(), LocalTime.now());
+                timeDifference = ChronoUnit.MINUTES.between(appointment.getStartDate().toLocalDateTime(), LocalDateTime.now());
 
                 if (timeDifference < 0 && timeDifference >= -15) {
                     upcomingMeeting = true;
@@ -118,7 +136,7 @@ public class LoginScreenController implements Initializable {
                     Optional<ButtonType> result = alert.showAndWait();
             }
         }
-
+        //if user enters correct username but incorrect password
         else
             {
                 loginLogEntry = usernameAttempt + " on " + ZonedDateTime.now().format(dateFormat) + " @ " + ZonedDateTime.now().format(timeFormat) + " UNSUCCESSFUL";
@@ -126,12 +144,11 @@ public class LoginScreenController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR, loginError);
                 alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label)node).setMinHeight(Region.USE_PREF_SIZE));
                 Optional<ButtonType> result = alert.showAndWait();
+                return;
             }
 
 
         recLoginAttempts.close();
-            //TODO write these login attempts to a file
-
     }
 
     /**

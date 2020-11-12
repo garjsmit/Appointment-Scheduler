@@ -218,9 +218,9 @@ public class AppointmentScreenController implements Initializable {
                 String type = appointmentTableview.getSelectionModel().getSelectedItem().getType();
                 AppointmentDAO.deleteAppointment(appointmentID);
 
-                Alert deleteConfimred = new Alert(Alert.AlertType.INFORMATION, "Meeting: " + type + " with Appointment ID: " + appointmentID + " has been cancelled.");
+                Alert deleteConfirmed = new Alert(Alert.AlertType.INFORMATION, "Meeting: " + type + " with Appointment ID: " + appointmentID + " has been cancelled.");
                 alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
-                Optional<ButtonType> answer = deleteConfimred.showAndWait();
+                Optional<ButtonType> answer = deleteConfirmed.showAndWait();
         }
             appointmentTableview.getItems().clear();
             AppointmentDAO.getAllAppointments();
@@ -228,6 +228,8 @@ public class AppointmentScreenController implements Initializable {
         }
 
     }
+
+
 
     /**
      * Save Appointment button event handler. Saves text fields to database. Creates new appointment, or overwrites existing information if appointment isn't null.
@@ -246,17 +248,19 @@ public class AppointmentScreenController implements Initializable {
         int userID = userCombo.getSelectionModel().getSelectedItem().getUserID();
         int contactID = contactCombo.getSelectionModel().getSelectedItem().getContactID();
 
-
         ZonedDateTime startTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), startHourCombo.getValue(), startMinuteCombo.getValue(), startPmRad.isSelected());
         ZonedDateTime endTime = TimeUtils.figureZonedDateTime(selectedDate.getValue(), endHourCombo.getValue(), endMinuteCombo.getValue(), endPmRad.isSelected());
         ZonedDateTime sob = TimeUtils.getZonedStartOfBusiness(selectedDate.getValue());
         ZonedDateTime eob = TimeUtils.getZonedEndOfBusiness(selectedDate.getValue());
 
+        //gives user an error if appointment doesn't fall within business hours
         if(startTime.isBefore(sob) || startTime.isAfter(eob) || endTime.isBefore(sob) || endTime.isAfter(eob)){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Your appointment must start within business hours, which are daily from 8 am to 10pm, EST");
             alert.getDialogPane().getChildren().stream().filter(node -> node instanceof Label).forEach(node -> ((Label) node).setMinHeight(Region.USE_PREF_SIZE));
             Optional<ButtonType> result = alert.showAndWait();
         }
+
+        //if appointment is within business hours, then it checks that it does not overlap with customer's other appointments
         else {
 
             for (Appointment appointment : customerAppointments) {
@@ -264,21 +268,15 @@ public class AppointmentScreenController implements Initializable {
                 ZonedDateTime appStartTime = appointment.getStartDate();
                 ZonedDateTime appEndTime = appointment.getEndDate();
 
-                boolean startTimeIsAfterAppStartTime = startTime.isAfter(appStartTime);
-                boolean startTimeIsBeforeAppEndTime = startTime.isBefore(appEndTime);
-                boolean endTimeIsAfterAppStartTime = endTime.isAfter(appStartTime);
-                boolean endTimeIsBeforeAppEndTime = endTime.isBefore(appEndTime);
-                boolean startTimeIsBeforeAppStartTime = startTime.isBefore(appStartTime);
-                boolean endTimeIsAfterAppEndTime = endTime.isAfter(appEndTime);
+                boolean newAppointmentStartsDuringScheduledApp = (startTime.isAfter(appStartTime) && startTime.isBefore(appEndTime));
+                boolean newAppointmentEndsDuringScheduledApp = (endTime.isAfter(appStartTime) && endTime.isBefore(appEndTime));
+                boolean newAppointmentCoversScheduledApp = (startTime.isBefore(appStartTime) && endTime.isAfter(appEndTime));
                 boolean startTimeEqualsStartTime = startTime.equals(appStartTime);
                 boolean endTimeEqualsEndTime = endTime.equals(appEndTime);
 
-                if ((appointment.getAppointmentID() != Integer.parseInt(appointmentIDText.getText()) &&
-                        ((startTimeIsAfterAppStartTime && startTimeIsBeforeAppEndTime ||
-                                (endTimeIsAfterAppStartTime && endTimeIsBeforeAppEndTime) ||
-                                (startTimeIsBeforeAppStartTime && endTimeIsAfterAppEndTime) ||
-                                startTimeEqualsStartTime ||
-                                endTimeEqualsEndTime)))){
+
+                if ((appointmentIDText.getText().isEmpty() || (appointment.getAppointmentID() != Integer.parseInt(appointmentIDText.getText())))
+                        && (newAppointmentStartsDuringScheduledApp || newAppointmentEndsDuringScheduledApp || newAppointmentCoversScheduledApp || startTimeEqualsStartTime || endTimeEqualsEndTime)){
                     overlap = true;
                     String errorMessage = appointment.getCustomerName() + " already has another appointment at that time. It's at: \n Start time : " + TimeUtils.timeFormat.format(appointment.getStartDate()) + "\nEnd Time: " + TimeUtils.timeFormat.format(appointment.getEndDate()) + ".";
                     Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage);
@@ -350,7 +348,6 @@ public class AppointmentScreenController implements Initializable {
     /** Initialize tableviews and ComboBoxes
      * Lambda expression used here to format the time in the Date, Start Time,  and End Time columns in the Appointments TableView.
      * */
-
     @Override
     public void initialize(URL url, ResourceBundle rb){
 

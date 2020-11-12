@@ -15,7 +15,7 @@ public class ContactDAO {
     private static ObservableList<Contact> contactList = FXCollections.observableArrayList();
 
     /**
-     * @return contactListi
+     * @return contactList
      * Returns list of all contacts from contacts table
      * */
     public static ObservableList<Contact> getAllContacts(){

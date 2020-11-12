@@ -2,9 +2,6 @@
 
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -197,12 +194,12 @@
             <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Label fx:id="selectAppointmentLabel" layoutX="888.0" layoutY="335.0">
+      <Label fx:id="selectAppointmentLabel" layoutX="650.0" layoutY="61.0" prefHeight="21.0" prefWidth="602.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <HBox layoutX="327.0" layoutY="344.0" prefHeight="25.0" prefWidth="925.0">
+      <HBox layoutX="305.0" layoutY="344.0" prefHeight="25.0" prefWidth="947.0">
          <children>
             <Label prefHeight="21.0" prefWidth="103.0" text="Show only:">
                <font>
@@ -230,14 +227,10 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </RadioButton>
-            <Button mnemonicParsing="false" onAction="#addAppointment" text="Add Appointment">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
+            <Button mnemonicParsing="false" onAction="#addAppointment" prefHeight="25.0" prefWidth="157.0" text="Add Appointment" />
             <Button mnemonicParsing="false" onAction="#updateAppointment" text="Change Appointment">
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Button>
             <Button mnemonicParsing="false" onAction="#deleteAppointment" text="Cancel Appointment">
